@@ -152,7 +152,8 @@ function format_path(key::DataKey, path_keys::Vector{String})::String
             isempty(matches) && error("path_key \"$pk\" not found in DataKey.params")
             length(matches) > 1 && error(
                 "Ambiguous leaf \"$pk\" in DataKey.params — use dotted notation. " *
-                "Matches: $(join([m[1] for m in matches], ", "))")
+                "Matches: $(join([m[1] for m in matches], ", "))",
+            )
             # Plain name → format WITHOUT group prefix (user chose plain name intentionally)
             push!(parts, _format_val(pk, matches[1][2]))
         end
