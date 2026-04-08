@@ -1,0 +1,12 @@
+[base]
+inherit = "parent.toml"
+
+[[paramsets]]
+
+[paramsets.system]
+N   = [64]
+chi = 80
+
+[paramsets.model]
+g = [1.0]
+h = 0.05

@@ -1,7 +1,7 @@
 ENV["GKSwstype"] = "100"
 
 using ParamIO, Test
-const dirs = []
+const dirs = ["paramio"]
 
 const FIG_BASE = joinpath(pkgdir(ParamIO), "docs", "src", "assets")
 const PATHS = Dict()

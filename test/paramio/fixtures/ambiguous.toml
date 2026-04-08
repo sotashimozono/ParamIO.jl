@@ -1,0 +1,14 @@
+# Leaf "N" appears in both system and model → AmbiguousPathKeyError
+[study]
+project_name  = "test_ambig"
+total_samples = 1
+outdir        = "out"
+
+[[paramsets]]
+
+[paramsets.system]
+N = [24, 48]
+
+[paramsets.model]
+N = [10, 20]
+g = 1.0

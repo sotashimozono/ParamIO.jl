@@ -1,0 +1,17 @@
+[study]
+project_name  = "test_basic"
+total_samples = 3
+outdir        = "out"
+
+[datavault]
+path_keys = ["system.N", "system.chi", "model.g", "model.h"]
+
+[[paramsets]]
+
+[paramsets.system]
+N   = [24, 48]
+chi = 40
+
+[paramsets.model]
+g = [0.5]
+h = 0.0
