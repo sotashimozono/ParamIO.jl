@@ -14,10 +14,12 @@ end
 
 function Base.showerror(io::IO, e::AmbiguousPathKeyError)
     hint = "\"$(e.groups[1]).$(e.leaf)\""
-    print(io,
+    print(
+        io,
         "AmbiguousPathKeyError: leaf \"$(e.leaf)\" appears in groups: ",
         join(e.groups, ", "),
-        ". Use dotted notation (e.g., $hint) in [datavault] path_keys to disambiguate.")
+        ". Use dotted notation (e.g., $hint) in [datavault] path_keys to disambiguate.",
+    )
 end
 
 # ── Structs ───────────────────────────────────────────────────────────────────
@@ -85,7 +87,7 @@ function load(path::AbstractString; inherit::Bool=true)::ConfigSpec
     )
 
     raw_paramsets = get(raw, "paramsets", Vector{Dict{String,Any}}())
-    flat_blocks   = [_flatten_block(b) for b in raw_paramsets]
+    flat_blocks = [_flatten_block(b) for b in raw_paramsets]
 
     if haskey(raw, "datavault") && haskey(raw["datavault"], "path_keys")
         path_keys = convert(Vector{String}, raw["datavault"]["path_keys"])
@@ -104,7 +106,7 @@ Expand all `[[paramsets]]` blocks via Cartesian product,
 deduplicate across blocks, and return one `DataKey` per (param_point × sample).
 """
 function expand(spec::ConfigSpec)::Vector{DataKey}
-    seen   = Set{Dict{String,Any}}()
+    seen = Set{Dict{String,Any}}()
     points = Dict{String,Any}[]
 
     for block in spec.paramsets
@@ -180,7 +182,7 @@ end
 function _split_dotted(k::String)
     idx = findfirst('.', k)
     idx === nothing && return ("", k)
-    return (k[1:idx-1], k[idx+1:end])
+    return (k[1:(idx - 1)], k[(idx + 1):end])
 end
 
 # Flatten one [[paramsets]] block: sub-tables become dotted top-level keys.
@@ -202,7 +204,7 @@ end
 # All Cartesian combinations of array-valued keys; scalars stay fixed.
 function _cartesian_product(flat::Dict{String,Any})::Vector{Dict{String,Any}}
     sweep_keys = [k for (k, v) in flat if v isa AbstractArray]
-    fixed      = Dict{String,Any}(k => v for (k, v) in flat if !(v isa AbstractArray))
+    fixed = Dict{String,Any}(k => v for (k, v) in flat if !(v isa AbstractArray))
 
     isempty(sweep_keys) && return [copy(fixed)]
 
@@ -212,7 +214,7 @@ function _cartesian_product(flat::Dict{String,Any})::Vector{Dict{String,Any}}
     function recurse(idx::Int, current::Dict{String,Any})
         if idx > length(sweep_keys)
             push!(result, merge(fixed, current))
-            return
+            return nothing
         end
         for val in ranges[idx]
             recurse(idx + 1, merge(current, Dict{String,Any}(sweep_keys[idx] => val)))
@@ -231,7 +233,7 @@ end
 
 function _format_val(name::String, val)::String
     val isa AbstractFloat && return @sprintf("%s%.2f", name, val)
-    val isa Integer       && return @sprintf("%s%d",   name, val)
+    val isa Integer && return @sprintf("%s%d", name, val)
     return "$(name)$(val)"
 end
 
@@ -251,7 +253,9 @@ function _merge_configs(parent::Dict{String,Any}, child::Dict{String,Any})::Dict
     result
 end
 
-function _validate_path_keys(path_keys::Vector{String}, flat_blocks::Vector{Dict{String,Any}})
+function _validate_path_keys(
+    path_keys::Vector{String}, flat_blocks::Vector{Dict{String,Any}}
+)
     all_keys = Set{String}()
     for b in flat_blocks
         union!(all_keys, keys(b))

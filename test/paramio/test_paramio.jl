@@ -5,11 +5,11 @@ const FIXTURES = joinpath(@__DIR__, "fixtures")
 @testset "load: basic" begin
     spec = ParamIO.load(joinpath(FIXTURES, "basic.toml"))
 
-    @test spec.study.project_name  == "test_basic"
+    @test spec.study.project_name == "test_basic"
     @test spec.study.total_samples == 3
-    @test spec.study.outdir        == "out"
-    @test spec.path_keys           == ["system.N", "system.chi", "model.g", "model.h"]
-    @test length(spec.paramsets)   == 1
+    @test spec.study.outdir == "out"
+    @test spec.path_keys == ["system.N", "system.chi", "model.g", "model.h"]
+    @test length(spec.paramsets) == 1
 end
 
 # ── expand ────────────────────────────────────────────────────────────────────
@@ -58,7 +58,7 @@ end
 
 @testset "format_path: plain keys" begin
     params = Dict{String,Any}("N" => 24, "chi" => 40, "g" => 0.5, "h" => 0.0)
-    key    = DataKey(params, 1)
+    key = DataKey(params, 1)
     path_keys = ["N", "chi", "g", "h"]
 
     result = ParamIO.format_path(key, path_keys)
@@ -67,10 +67,7 @@ end
 
 @testset "format_path: dotted keys add group prefix" begin
     params = Dict{String,Any}(
-        "system.N"   => 24,
-        "system.chi" => 40,
-        "model.g"    => 0.5,
-        "model.h"    => 0.0,
+        "system.N" => 24, "system.chi" => 40, "model.g" => 0.5, "model.h" => 0.0
     )
     key = DataKey(params, 1)
     path_keys = ["system.N", "system.chi", "model.g", "model.h"]
@@ -80,8 +77,8 @@ end
 end
 
 @testset "format_path: integer and float formatting" begin
-    params    = Dict{String,Any}("N" => 128, "beta" => 10.0, "mu" => -0.5)
-    key       = DataKey(params, 1)
+    params = Dict{String,Any}("N" => 128, "beta" => 10.0, "mu" => -0.5)
+    key = DataKey(params, 1)
     path_keys = ["N", "beta", "mu"]
 
     result = ParamIO.format_path(key, path_keys)
@@ -112,7 +109,7 @@ end
 
     # study and path_keys come from parent
     @test spec.study.project_name == "test_inherit"
-    @test spec.path_keys          == ["system.N", "system.chi", "model.g", "model.h"]
+    @test spec.path_keys == ["system.N", "system.chi", "model.g", "model.h"]
 
     # expand: parent block (1 pt) + child block (1 pt) × 2 samples = 4 keys
     keys = ParamIO.expand(spec)
