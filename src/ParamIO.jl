@@ -141,8 +141,22 @@ function format_path(key::DataKey, path_keys::Vector{String})::String
     parts = String[]
     for pk in path_keys
         val = get(key.params, pk, nothing)
-        val === nothing && error("path_key \"$pk\" not found in DataKey.params")
-        push!(parts, _format_param(pk, val))
+        if val !== nothing
+            # Exact match (dotted "system.N" or top-level "N")
+            push!(parts, _format_param(pk, val))
+        else
+            # pk is a plain leaf name — find it in params by leaf match
+            _, leaf = _split_dotted(pk)
+            leaf == pk || error("path_key \"$pk\" not found in DataKey.params")
+            matches = [(k, v) for (k, v) in key.params if _split_dotted(k)[2] == pk]
+            isempty(matches) && error("path_key \"$pk\" not found in DataKey.params")
+            length(matches) > 1 && error(
+                "Ambiguous leaf \"$pk\" in DataKey.params — use dotted notation. " *
+                "Matches: $(join([m[1] for m in matches], ", "))",
+            )
+            # Plain name → format WITHOUT group prefix (user chose plain name intentionally)
+            push!(parts, _format_val(pk, matches[1][2]))
+        end
     end
     join(parts, "_")
 end
@@ -261,7 +275,18 @@ function _validate_path_keys(
         union!(all_keys, keys(b))
     end
     for pk in path_keys
-        pk ∈ all_keys && continue
+        pk ∈ all_keys && continue  # exact match (dotted or top-level)
+        # Try as plain leaf name
+        _, leaf = _split_dotted(pk)
+        if leaf == pk  # pk has no dot → plain leaf lookup
+            matches = [k for k in all_keys if _split_dotted(k)[2] == pk]
+            if length(matches) == 1
+                continue  # found exactly one → OK
+            elseif length(matches) > 1
+                groups = sort([_split_dotted(k)[1] for k in matches])
+                throw(AmbiguousPathKeyError(pk, groups))
+            end
+        end
         avail = join(sort(collect(all_keys)), ", ")
         error("path_key \"$pk\" not found in any paramset block. Available: $avail")
     end
