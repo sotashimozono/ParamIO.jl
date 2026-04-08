@@ -1,7 +1,7 @@
-# MyModule.jl
+# ParamIO.jl
 
 ## Models
 
 ```@autodocs
-Modules = [MyModule]
+Modules = [ParamIO]
 ```

@@ -1,5 +1,5 @@
-name = "MyModule"
-uuid = "4f7774e9-efb7-42d6-b735-122dcc7ea7b8"
+name = "ParamIO"
+uuid = "938a3ac2-d340-473c-bcf1-88af577e4ccf"
 version = "0.1.0"
 authors = ["sota shimozono <shimozono-sota631@g.ecc.u-tokyo.ac.jp>"]
 
