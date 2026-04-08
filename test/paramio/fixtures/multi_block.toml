@@ -1,0 +1,28 @@
+# Two [[paramsets]] blocks: union of Cartesian products
+[study]
+project_name  = "test_multi"
+total_samples = 2
+outdir        = "out"
+
+[datavault]
+path_keys = ["system.N", "system.chi", "model.g", "model.h"]
+
+[[paramsets]]
+
+[paramsets.system]
+N   = [24, 48]
+chi = 40
+
+[paramsets.model]
+g = [0.5]
+h = 0.0
+
+[[paramsets]]
+
+[paramsets.system]
+N   = [24, 48]
+chi = 40
+
+[paramsets.model]
+g  = [1.0]
+h = [0.01, 0.02, 0.03]

@@ -3,6 +3,14 @@ uuid = "938a3ac2-d340-473c-bcf1-88af577e4ccf"
 version = "0.1.0"
 authors = ["sota shimozono <shimozono-sota631@g.ecc.u-tokyo.ac.jp>"]
 
+[deps]
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
+TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
+
+[compat]
+Printf = "1.11.0"
+TOML = "1.0.3"
+
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 

@@ -1,0 +1,15 @@
+# No [datavault] section: path_keys auto-resolved
+[study]
+project_name  = "test_auto"
+total_samples = 1
+outdir        = "out"
+
+[[paramsets]]
+
+[paramsets.system]
+N   = [24, 48]
+chi = 40
+
+[paramsets.model]
+g = [1.0]
+h = 0.0
