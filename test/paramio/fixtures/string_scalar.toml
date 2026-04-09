@@ -1,0 +1,18 @@
+# 文字列スカラー（model_type のような固定文字列）が正しく扱えるかのテスト用
+[study]
+project_name  = "test_string_scalar"
+total_samples = 1
+outdir        = "out"
+
+[datavault]
+path_keys = ["system.N", "model.type", "model.g"]
+
+[[paramsets]]
+
+[paramsets.system]
+N = [24, 48]
+
+[paramsets.model]
+type = "TFIML"
+J    = 1.0
+g    = [0.5, 1.0]

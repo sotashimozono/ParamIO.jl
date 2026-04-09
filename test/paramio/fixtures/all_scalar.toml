@@ -1,0 +1,18 @@
+# 全パラメータがスカラー（sweep 軸なし → 1点だけ）
+[study]
+project_name  = "test_all_scalar"
+total_samples = 3
+outdir        = "out"
+
+[datavault]
+path_keys = ["system.N", "model.g"]
+
+[[paramsets]]
+
+[paramsets.system]
+N   = 24
+chi = 40
+
+[paramsets.model]
+g = 0.5
+h = 0.0
