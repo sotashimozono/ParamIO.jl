@@ -72,7 +72,7 @@ end
     spec = ParamIO.load(joinpath(FIXTURES, "basic.toml"))
     # basic.toml は N が sweep。kwarg で順序を変えても結果セットは同じ
     keys_default = ParamIO.expand(spec)
-    keys_custom  = ParamIO.expand(spec; sweep_order=["system.N"])
+    keys_custom = ParamIO.expand(spec; sweep_order=["system.N"])
     @test Set(keys_default) == Set(keys_custom)
 end
 
@@ -80,7 +80,9 @@ end
     # 4 sweep軸 (a, b, c, d) を持つ動的 config
     mktempdir() do tmpdir
         cfg = joinpath(tmpdir, "fourdim.toml")
-        write(cfg, """
+        write(
+            cfg,
+            """
 [study]
 project_name  = "fourdim"
 total_samples = 1
@@ -94,7 +96,8 @@ a = [1, 2]
 b = [10, 20, 30]
 c = [100, 200]
 d = ["x", "y"]
-""")
+""",
+        )
         spec = ParamIO.load(cfg)
 
         # デフォルト（path_keys 順）: a が外側、d が内側
@@ -120,7 +123,9 @@ end
 @testset "expand: sweep_order に部分指定すると残りは sorted で末尾追加" begin
     mktempdir() do tmpdir
         cfg = joinpath(tmpdir, "partial.toml")
-        write(cfg, """
+        write(
+            cfg,
+            """
 [study]
 project_name  = "partial"
 total_samples = 1
@@ -133,7 +138,8 @@ path_keys = ["a", "b", "c"]
 a = [1, 2]
 b = [10, 20]
 c = [100, 200]
-""")
+""",
+        )
         spec = ParamIO.load(cfg)
         # b だけ指定 → b が外側、残り (a, c) は sorted で内側
         keys = ParamIO.expand(spec; sweep_order=["b"])
@@ -164,7 +170,9 @@ end
 @testset "expand: kwarg が TOML より優先" begin
     spec = ParamIO.load(joinpath(FIXTURES, "sweep_order.toml"))
     # kwarg で逆転
-    keys = ParamIO.expand(spec; sweep_order=["model.g", "system.chi", "system.N", "model.h"])
+    keys = ParamIO.expand(
+        spec; sweep_order=["model.g", "system.chi", "system.N", "model.h"]
+    )
     g_seq = [k.params["model.g"] for k in keys]
     h_seq = [k.params["model.h"] for k in keys]
     # g が最も遅い、h が最も速いはず

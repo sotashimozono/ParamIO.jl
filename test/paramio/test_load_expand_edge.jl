@@ -61,7 +61,9 @@ end
     # mktempdir 内に動的に config を作る
     mktempdir() do tmpdir
         cfg = joinpath(tmpdir, "huge.toml")
-        write(cfg, """
+        write(
+            cfg,
+            """
 [study]
 project_name  = "huge"
 total_samples = 1
@@ -76,7 +78,8 @@ b = [1, 2, 3, 4, 5]
 c = [1, 2, 3, 4, 5, 6]
 d = [1, 2, 3, 4, 5, 6, 7]
 e = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-""")
+""",
+        )
         spec = ParamIO.load(cfg)
         keys = ParamIO.expand(spec)
         @test length(keys) == 4 * 5 * 6 * 7 * 10
@@ -87,7 +90,9 @@ end
     # 同じ値を含む sweep
     mktempdir() do tmpdir
         cfg = joinpath(tmpdir, "dup.toml")
-        write(cfg, """
+        write(
+            cfg,
+            """
 [study]
 project_name  = "dup"
 total_samples = 1
@@ -101,7 +106,8 @@ x = [1, 2, 2, 3, 3, 3]
 
 [[paramsets]]
 x = [3, 4]
-""")
+""",
+        )
         spec = ParamIO.load(cfg)
         keys = ParamIO.expand(spec)
         # ブロック1: {1, 2, 2, 3, 3, 3} → 6 個 (TOML 配列の重複は ParamIO 側で排除されない)
@@ -120,13 +126,16 @@ end
     # study セクションがない場合の既定値
     mktempdir() do tmpdir
         cfg = joinpath(tmpdir, "minimal.toml")
-        write(cfg, """
+        write(
+            cfg,
+            """
 [datavault]
 path_keys = ["x"]
 
 [[paramsets]]
 x = [1, 2]
-""")
+""",
+        )
         spec = ParamIO.load(cfg)
         # 既定値: total_samples=1, project_name="unnamed", outdir="out"
         @test spec.study.total_samples == 1

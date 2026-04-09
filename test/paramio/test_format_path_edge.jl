@@ -42,7 +42,7 @@ end
     key = DataKey(params, 1)
     @test ParamIO.format_path(key, ["a", "b", "c"]) == "a1_b2_c3"
     @test ParamIO.format_path(key, ["c", "b", "a"]) == "c3_b2_a1"
-    @test ParamIO.format_path(key, ["b", "a"])      == "b2_a1"
+    @test ParamIO.format_path(key, ["b", "a"]) == "b2_a1"
 end
 
 @testset "format_path: dotted と plain の混在" begin

@@ -54,9 +54,9 @@ struct ConfigSpec
 end
 
 # Backward-compatible constructor (no sweep_order)
-function ConfigSpec(study::StudySpec,
-                    path_keys::Vector{String},
-                    paramsets::Vector{Dict{String,Any}})
+function ConfigSpec(
+    study::StudySpec, path_keys::Vector{String}, paramsets::Vector{Dict{String,Any}}
+)
     ConfigSpec(study, path_keys, paramsets, String[])
 end
 
