@@ -1,0 +1,13 @@
+# total_samples = 0 のエッジケース
+[study]
+project_name  = "test_zero"
+total_samples = 0
+outdir        = "out"
+
+[datavault]
+path_keys = ["system.N"]
+
+[[paramsets]]
+
+[paramsets.system]
+N = [24, 48]
