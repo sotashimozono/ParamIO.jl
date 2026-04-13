@@ -15,6 +15,7 @@ using TOML, Printf
 
 export ConfigSpec, StudySpec, DataKey, AmbiguousPathKeyError
 export load, expand, format_path, resolve_path_keys
+export canonical
 
 # ── Core ──────────────────────────────────────────────────────────────────────
 include("core/types.jl")
@@ -27,5 +28,6 @@ include("util/path_keys.jl")
 include("core/load.jl")
 include("core/expand.jl")
 include("core/format.jl")
+include("core/canonical.jl")
 
 end # module ParamIO
