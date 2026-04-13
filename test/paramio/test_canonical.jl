@@ -24,7 +24,7 @@ using ParamIO, Test
         k = DataKey(Dict{String,Any}("x" => 0.1 + 0.2), 0)
         s = canonical(k)
         # Extract value portion between "x=" and ";#sample"
-        mid = s[length("x=")+1:findlast(';', s)-1]
+        mid = s[(length("x=") + 1):(findlast(';', s) - 1)]
         @test parse(Float64, mid) === 0.1 + 0.2
     end
 
@@ -53,7 +53,8 @@ using ParamIO, Test
         @test canonical(DataKey(Dict{String,Any}("b" => true), 0)) == "b=true;#sample=0"
         @test canonical(DataKey(Dict{String,Any}("b" => false), 0)) == "b=false;#sample=0"
         @test canonical(DataKey(Dict{String,Any}("i" => 42), 0)) == "i=42;#sample=0"
-        @test canonical(DataKey(Dict{String,Any}("n" => nothing), 0)) == "n=nothing;#sample=0"
+        @test canonical(DataKey(Dict{String,Any}("n" => nothing), 0)) ==
+            "n=nothing;#sample=0"
     end
 
     @testset "sample index always last" begin
